@@ -1,0 +1,11 @@
+language: python
+python:
+  - "2.7"
+install:
+  - sudo curl -sSL https://get.docker.io/ubuntu/ | sudo sh
+  - sudo docker run --name data -v /data/db -tid tianon/true
+  - sudo docker run --name mongodb --volumes-from data -d dockerfile/mongodb
+  - sudo docker build -t http-test
+  - sudo docker run -p 80:80 --link mongodb:db -d http-test
+script:
+  - python tests/test_basic.py
