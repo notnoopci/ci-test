@@ -26,4 +26,5 @@ test:
 
   override:
     - docker run -p 80:80 -d http-test
+    - sleep 5
     - python tests/test_basic.py

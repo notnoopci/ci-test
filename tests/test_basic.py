@@ -7,7 +7,7 @@ class TestServerUp(unittest.TestCase):
 
 	def test_index_is_up(self):
 		r = requests.get(self.uri)
-		self.assertEqual(r.status_code, '200')
+		self.assertEqual(r.status_code, requests.codes.ok)
 
 
 if __name__ == '__main__':
