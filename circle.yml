@@ -5,14 +5,25 @@ machine:
     version: 2.7.8
 
 dependencies:
+  cache_directories:
+    - "~/docker"
+
   override:
     - pip install -r requirements.txt
+    - if [[ -e ~/docker ]]; then docker load -i ~/docker/mongodb.tar; fi
+    - if [[ -e ~/docker ]]; then docker load -i ~/docker/nginx.tar; fi
+    - if [[ -e ~/docker ]]; then docker load -i ~/docker/true.tar; fi
 
 test:
   pre:
-    - docker build -t http-test .
     - docker run --name data -v /data/db -tid tianon/true
-    - docker run --name mongodb --volumes-from topbox-data -d dockerfile/mongodb
-    - docker run -p 80:80 -d http-test
+    - docker run --name mongodb --volumes-from data -d dockerfile/mongodb
+    - docker build -t http-test .
+    - mkdir -p ~/docker
+    - docker save dockerfile/mongodb > ~/docker/mongodb.tar
+    - docker save dockerfile/nginx > ~/docker/nginx.tar
+    - docker save tianon/true > ~/docker/true.tar
+
   override:
+    - docker run -p 80:80 -d http-test
     - python tests/test_basic.py
