@@ -2,6 +2,7 @@ language: python
 python:
   - "2.7"
 install:
+  - pip install -r requirements.txt --use-mirrors
   - sudo curl -sSL https://get.docker.io/ubuntu/ | sudo sh
   - sudo docker run --name data -v /data/db -tid tianon/true
   - sudo docker run --name mongodb --volumes-from data -d dockerfile/mongodb
