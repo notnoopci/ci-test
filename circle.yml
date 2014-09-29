@@ -13,17 +13,18 @@ dependencies:
     - if [[ -e ~/docker ]]; then docker load -i ~/docker/mongodb.tar; fi
     - if [[ -e ~/docker ]]; then docker load -i ~/docker/nginx.tar; fi
     - if [[ -e ~/docker ]]; then docker load -i ~/docker/true.tar; fi
-
-test:
-  pre:
-    - docker run --name data -v /data/db -tid tianon/true
-    - docker run --name mongodb --volumes-from data -d dockerfile/mongodb
-    - docker build -t http-test .
+    - docker pull dockerfile/mongodb
+    - docker pull dockerfile/nginx
+    - docker pull tianon/true
     - mkdir -p ~/docker
     - docker save dockerfile/mongodb > ~/docker/mongodb.tar
     - docker save dockerfile/nginx > ~/docker/nginx.tar
     - docker save tianon/true > ~/docker/true.tar
+    - docker run --name data -v /data/db -tid tianon/true
+    - docker run --name mongodb --volumes-from data -d dockerfile/mongodb
+    - docker build -t http-test .
 
+test:
   override:
     - docker run -p 80:80 -d http-test
     - sleep 5
