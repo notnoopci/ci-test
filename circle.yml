@@ -8,7 +8,7 @@ dependencies:
   override:
     - pip install requirements.txt
 
-tests:
+test:
   pre:
     - docker build -t http-test .
     - docker run --name data -v /data/db -tid tianon/true
