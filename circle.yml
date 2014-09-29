@@ -1,0 +1,18 @@
+machine:
+  services:
+    - docker
+  python:
+    version: 2.7.8
+
+dependencies:
+  override:
+  	- pip install requirements.txt
+
+tests:
+  pre:
+  	- docker build -t http-test .
+    - docker run --name data -v /data/db -tid tianon/true
+    - docker run --name mongodb --volumes-from topbox-data -d dockerfile/mongodb
+    - docker run -p 80:80 -d http-test
+  override:
+    - python tests/test_basic.py
