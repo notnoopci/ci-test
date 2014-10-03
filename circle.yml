@@ -21,11 +21,11 @@ dependencies:
     - docker save dockerfile/nginx > ~/docker/nginx.tar
     - docker save tianon/true > ~/docker/true.tar
     - docker run --name data -v /data/db -tid tianon/true
-    - docker run --name mongodb --volumes-from data -d dockerfile/mongodb
+    - docker run --name mongodb --privileged=true --volumes-from data -d dockerfile/mongodb
     - docker build -t http-test .
 
 test:
   override:
-    - docker run -p 80:80 --link mongodb:db -d http-test
+    - docker run -p 80:80 --privileged=true --link mongodb:db -d http-test
     - sleep 5
     - python tests/test_basic.py
