@@ -10,18 +10,18 @@ dependencies:
 
   override:
     - pip install -r requirements.txt
-    - if [[ -e ~/docker ]]; then docker load -i ~/docker/mongodb.tar; fi
+    - if [[ -e ~/docker ]]; then docker load -i ~/docker/mongo.tar; fi
     - if [[ -e ~/docker ]]; then docker load -i ~/docker/nginx.tar; fi
     - if [[ -e ~/docker ]]; then docker load -i ~/docker/true.tar; fi
-    - docker pull dockerfile/mongodb
+    - docker pull mongo
     - docker pull dockerfile/nginx
     - docker pull tianon/true
     - mkdir -p ~/docker
-    - docker save dockerfile/mongodb > ~/docker/mongodb.tar
+    - docker save mongo > ~/docker/mongo.tar
     - docker save dockerfile/nginx > ~/docker/nginx.tar
     - docker save tianon/true > ~/docker/true.tar
     - docker run --name data -v /data/db -tid tianon/true
-    - docker run --name mongodb --privileged=true --volumes-from data -d dockerfile/mongodb
+    - docker run --name mongodb --privileged=true --volumes-from data -d mongo
     - docker build -t http-test .
 
 test:
