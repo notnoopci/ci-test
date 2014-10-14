@@ -10,9 +10,9 @@ dependencies:
 
   override:
     - pip install -r requirements.txt
-    - if [[ -e ~/docker ]]; then docker load -i ~/docker/mongo.tar; fi
-    - if [[ -e ~/docker ]]; then docker load -i ~/docker/nginx.tar; fi
-    - if [[ -e ~/docker ]]; then docker load -i ~/docker/true.tar; fi
+    - if [[ -e ~/docker/mongo.tar ]]; then docker load -i ~/docker/mongo.tar; fi
+    - if [[ -e ~/docker/nginx.tar ]]; then docker load -i ~/docker/nginx.tar; fi
+    - if [[ -e ~/docker/true.tar ]]; then docker load -i ~/docker/true.tar; fi
     - docker pull mongo
     - docker pull dockerfile/nginx
     - docker pull tianon/true
